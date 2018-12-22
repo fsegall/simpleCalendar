@@ -7,7 +7,7 @@ h1 {
   text-shadow: 1px 1px 3px #8f8f8f;
 }
 
-#Calendar {
+body {
   background-color:  #f0f0f5;
   padding: 0 1rem;
 }
@@ -22,7 +22,7 @@ ul.day-of-week li {
   list-style-type: none;
   display: grid;
   justify-content: center;
-  font-size: 2rem;
+  font-size: 1.5rem;
 }
 
 .CalendarPage {

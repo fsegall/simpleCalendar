@@ -126,7 +126,7 @@ function onSubmit (e) {
     
     const appointmentObj = { title: titleString, content: contentString, date: day.toString() }
     
-    localStorage.setItem('Appointment', JSON.stringify(appointmentObj))
+    localStorage.setItem('Appointment', JSON.stringify(appointmentObj));
     
     console.log(localStorage.getItem('Appointment'));
     
@@ -144,17 +144,16 @@ document.querySelector('.clear').addEventListener('click', () => {
 
 // Put multiple items in local Storage
 
-//appointmentsArr = [];
-//counter = 0;
+let appointmentsArr = [];
 
+function setToStorage (title, content) {
+  appointmentsArr.push({ title: title, content: content, date: day });
+  localStorage.setItem('Appointments', JSON.stringify(appointmentsArr));
+};
 
-//function setToStorage (title, content) {
-  //appointmentsArr.push({ title: title, content: content, date: day, id: counter });
-  //localStorage.setItem('Appointments': JSON.stringify({'title': title,'content': content}));
-  //counter++;
-//};
+setToStorage ('here', 'now');
+setToStorage ('another', 'again');
 
-//setToStorage ('here', 'now');
 
 
 
