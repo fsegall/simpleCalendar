@@ -1,0 +1,114 @@
+h1 {
+  color: #900C3F;
+  margin: 2rem;
+  padding-top: 1rem;
+  text-align: center;
+  font-size: 3rem;
+  text-shadow: 1px 1px 3px #8f8f8f;
+}
+
+#Calendar {
+  background-color:  #f0f0f5;
+  padding: 0 1rem;
+}
+
+.day-of-week {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+ul.day-of-week li {
+  color: #900C3F;
+  list-style-type: none;
+  display: grid;
+  justify-content: center;
+  font-size: 2rem;
+}
+
+.CalendarPage {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(5, 100px);
+  grid-gap: 10px;
+}
+
+ul.CalendarPage li {
+  border-radius: 10px;
+  list-style-type: none;
+  background-color: #b3b3cc;
+  display: grid;
+  justify-content: center;
+  font-weight: bold;
+  color: #fff;
+  padding-top: 0.5rem;
+}
+
+.form-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr)
+  grid-template-rows: 1fr 1fr;
+  padding: 3rem;
+}
+
+.form-row {
+  grid-column: 4 / span 1;
+}
+
+.form-item textarea {
+  width: 100%;
+}
+
+.form-item input {
+  float: right;
+}
+
+.title input {
+  margin-bottom: 1rem;
+  padding: 10px;
+}
+
+label {
+  padding: 1rem 0;
+  color: #330000;
+  display: block;
+}
+
+label.formHeader {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+label.date {
+  text-align: right;
+}
+
+.add {
+  padding: 15px 30px;
+  background-color: grey;
+  border: none;
+  color: #fff;
+  float: right;
+  margin-top: 1rem;
+}
+
+.add:hover {
+  background-color: #b3b3cc;
+  color: grey;
+}
+
+.clear {
+  padding: 15px 30px;
+  background-color: #f53128; 
+  border: none;
+  color: #fff;
+  float: right;
+  margin-top: 1rem;
+}
+
+.clear:hover {
+  background-color: #FF5733; 
+}
+
+.red-border {
+  border: 2px solid #900C3F;
+}
