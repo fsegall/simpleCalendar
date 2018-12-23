@@ -12,22 +12,30 @@ console.log('day', day);
 
 // Elements variables
 
-const mainEl = document.querySelector("#Calendar");
+// const mainEl = document.querySelector("#Calendar");
 
-const titleEl = document.querySelector("#Title");
+const headerTitleEl = document.querySelector("#headerTitle");
+
+
+// Divs to render a appointment
 
 const renderTitle = document.querySelector('#title');
+
+const renderDate = document.querySelector('#date');
 
 const renderContent = document.querySelector('#content');
 
 const renderButton = document.querySelector("#button");
 
+// Appointments array
+
+let appointmentsArr = [];
 
 // Title of the Calendar with month
 
 let monthArray = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-titleEl.innerHTML = `${monthArray[month]} 2018 Calendar`;
+headerTitleEl.innerHTML = `${monthArray[month]} 2018 Calendar`;
 
 // Selecting first calendar cell 
 
@@ -70,23 +78,23 @@ datePicker.addEventListener('input', (e) => {
 });
 
 // Renders an Appointement from local storage
-    
-function removeAppointment() {
-    renderTitle.innerHTML = "" ;
-    renderContent.innerHTML = "" ;
-    renderButton.innerHTML = "" ;  
-}
 
 function renderAppointment () {
     
-    const appointmentObj = JSON.parse(localStorage.getItem('Appointment'))
-    const { title, content } = appointmentObj;
-    
+    const appointments = JSON.parse(localStorage.getItem('Appointments'))
+
+    for(let appointment of appointments) {
+
+    }
+
+    const { title, content, date } = appointments[0];
+    const renderDate = document.querySelector('#date');
     const renderTitle = document.querySelector('#title');
     const renderContent = document.querySelector('#content');
     const renderButton = document.querySelector("#button");
     
     const titleEl = document.createElement('h3');
+    const dateEl = document.createElement('h4');
     const contentEl = document.createElement('p');
     const deleteButtonEl = document.createElement('button');
     
@@ -94,21 +102,58 @@ function renderAppointment () {
     deleteButtonEl.setAttribute('onclick', 'removeAppointment()');
     
     titleEl.textContent = title;
+    dateEl.textContent = date;
     contentEl.textContent = content;
     deleteButtonEl.textContent = "Delete";
     
     console.log(titleEl, contentEl);
     
     renderTitle.appendChild(titleEl);
+    renderDate.appendChild(dateEl);
     renderContent.appendChild(contentEl);
     renderButton.appendChild(deleteButtonEl);
-}
-    
 
+    dayWithAppointment(title, date);
+
+
+
+
+}
+
+// Renders the title of an appointment to the calendar cell
+
+function dayWithAppointment (title, day) {
+
+  //const appointments = JSON.parse(localStorage.getItem('Appointments'))
+
+  //const { date, title } = appointments[0];
+
+  const className = `.item${day}`;
+
+  console.log(className);
+
+  const cell = document.querySelector(className);
+
+  const titleEl = document.createElement('span');
+
+  titleEl.textContent = title;
+
+  cell.appendChild(titleEl);
+
+}
+
+// Removes an Appointment
+    
+function removeAppointment() {
+  renderTitle.innerHTML = "" ;
+  renderDate.innerHTML = "";
+  renderContent.innerHTML = "" ;
+  renderButton.innerHTML = "" ;  
+}
 
 // Gets form title and content and sets it to local storage
 
-document.querySelector('#formInputs').addEventListener('submit', (e) => onSubmit(e) )
+document.querySelector('#formInputs').addEventListener('submit', (e) => onSubmit(e) );
 
 function onSubmit (e) {
     
@@ -121,14 +166,18 @@ function onSubmit (e) {
     const titleString = formInputs.elements[1].value;
     
     const contentString = formInputs.elements[2].value;
+
+    // Fix current day being yesterday (Some issue with getDate and local time in Brazil)
     
-    const dayString =  formInputs.elements[0].value;
+    const daySelect = formInputs.elements[0].valueAsDate.getMonth() === 10 ? "1" :  (formInputs.elements[0].valueAsDate.getDate() + 1).toString() ;
     
-    const appointmentObj = { title: titleString, content: contentString, date: day.toString() }
+    const appointmentObj = { title: titleString, content: contentString, date: daySelect }
+
+    appointmentsArr.push(appointmentObj);
+
+    localStorage.setItem('Appointments', JSON.stringify(appointmentsArr));
     
-    localStorage.setItem('Appointment', JSON.stringify(appointmentObj));
-    
-    console.log(localStorage.getItem('Appointment'));
+    console.log(localStorage.getItem('Appointments'));
     
     renderAppointment();
     
@@ -144,16 +193,16 @@ document.querySelector('.clear').addEventListener('click', () => {
 
 // Put multiple items in local Storage
 
-let appointmentsArr = [];
 
-function setToStorage (title, content) {
+
+/* function setToStorage (title, content) {
   appointmentsArr.push({ title: title, content: content, date: day });
   localStorage.setItem('Appointments', JSON.stringify(appointmentsArr));
 };
 
 setToStorage ('here', 'now');
 setToStorage ('another', 'again');
-
+ */
 
 
 

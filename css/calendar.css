@@ -74,7 +74,7 @@ label {
 }
 
 label.formHeader {
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: bold;
 }
 
@@ -83,7 +83,7 @@ label.date {
 }
 
 .add {
-  padding: 15px 30px;
+  padding: 10px 20px;
   background-color: grey;
   border: none;
   color: #fff;
@@ -97,7 +97,7 @@ label.date {
 }
 
 .clear {
-  padding: 15px 30px;
+  padding: 10px 20px;
   background-color: #f53128; 
   border: none;
   color: #fff;
@@ -105,7 +105,15 @@ label.date {
   margin-top: 1rem;
 }
 
-.clear:hover {
+#delete {
+  padding: 10px 20px;
+  background-color: #f53128; 
+  border: none;
+  color: #fff;
+  margin-top: 1rem;
+}
+
+.clear:hover, #delete:hover {
   background-color: #FF5733; 
 }
 
