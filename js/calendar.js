@@ -43,7 +43,26 @@ function testing () {
     console.log(document.querySelector('.item1'));
 }
 
+// Gets appointments from local storage
+
+const appointments = JSON.parse(localStorage.getItem('Appointments'))
+
+// Render appointment titles on load 
+
+window.addEventListener('load', () => {
+
+console.log('Array', appointments);
+
+for(let i = 0; i < appointments.length; i++) {
+  const { title, content, date } = appointments[i];
+  console.log('Appointment', appointments[i]);
+  renderAppointment (date, title, content);
+}
+
+})
+
 // Toggles a blue border around calendar cells when clicked
+
 
 document.querySelector("#CalendarPage").addEventListener('click', (e) => { 
     
@@ -55,6 +74,14 @@ document.querySelector("#CalendarPage").addEventListener('click', (e) => {
     
     if(e.target.nodeName === "LI") {
     e.target.classList.add('red-border');
+    }
+
+    const appointments = JSON.parse(localStorage.getItem('Appointments'))
+
+    for(let i = 0; i < appointments.length; i++) {
+      const { title, content, date } = appointments[i];
+      console.log('Appointment', appointments[i]);
+      renderAppointment (date, title, content);
     }
 
 });
@@ -79,17 +106,17 @@ datePicker.addEventListener('input', (e) => {
 
 // Renders an Appointement from local storage
 
-function renderAppointment () {
+function renderAppointment (date, title, content) {
     
-    const appointments = JSON.parse(localStorage.getItem('Appointments'))
+/*     const appointments = JSON.parse(localStorage.getItem('Appointments'))
 
     for(let appointment of appointments) {
 
-    }
+    } */
 
-    const { title, content, date } = appointments[0];
-    const renderDate = document.querySelector('#date');
+    //const { title, content, date } = appointments[0];
     const renderTitle = document.querySelector('#title');
+    const renderDate = document.querySelector('#date');
     const renderContent = document.querySelector('#content');
     const renderButton = document.querySelector("#button");
     
@@ -99,7 +126,7 @@ function renderAppointment () {
     const deleteButtonEl = document.createElement('button');
     
     deleteButtonEl.setAttribute('id', 'delete');
-    deleteButtonEl.setAttribute('onclick', 'removeAppointment()');
+    deleteButtonEl.setAttribute('onclick', `removeAppointment(${date})`);
     
     titleEl.textContent = title;
     dateEl.textContent = date;
@@ -112,27 +139,26 @@ function renderAppointment () {
     renderDate.appendChild(dateEl);
     renderContent.appendChild(contentEl);
     renderButton.appendChild(deleteButtonEl);
-
+    
     dayWithAppointment(title, date);
-
-
-
 
 }
 
 // Renders the title of an appointment to the calendar cell
 
 function dayWithAppointment (title, day) {
-
+  
   //const appointments = JSON.parse(localStorage.getItem('Appointments'))
 
   //const { date, title } = appointments[0];
 
-  const className = `.item${day}`;
+  let itemClass = `.item${day}`;
 
-  console.log(className);
+  console.log(itemClass);
 
-  const cell = document.querySelector(className);
+  
+
+  const cell = document.querySelector(itemClass);
 
   const titleEl = document.createElement('span');
 
@@ -144,11 +170,25 @@ function dayWithAppointment (title, day) {
 
 // Removes an Appointment
     
-function removeAppointment() {
+async function removeAppointment(day) {
+
+  // delete item from local storage 
+  console.log('before', appointmentsArr);
+  appointmentsArr.filter(appointment => appointment.date !== day );
+  console.log('here', appointmentsArr);
+  await localStorage.setItem('Appointments', JSON.stringify(appointmentsArr));
+
   renderTitle.innerHTML = "" ;
   renderDate.innerHTML = "";
   renderContent.innerHTML = "" ;
   renderButton.innerHTML = "" ;  
+  
+  reload(); 
+
+}
+
+function reload () {
+  location.reload();
 }
 
 // Gets form title and content and sets it to local storage
@@ -177,9 +217,9 @@ function onSubmit (e) {
 
     localStorage.setItem('Appointments', JSON.stringify(appointmentsArr));
     
-    console.log(localStorage.getItem('Appointments'));
+    //console.log(localStorage.getItem('Appointments'));
     
-    renderAppointment();
+    renderAppointment(appointmentObj.date, appointmentObj.title, appointmentObj.content);
     
     formInputs.elements[1].value = "";
     formInputs.elements[2].value = "";
