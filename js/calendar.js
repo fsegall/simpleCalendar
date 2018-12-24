@@ -33,16 +33,12 @@ let monthArray = ["January", "February", "March", "April", "May", "June", "July"
 
 headerTitleEl.innerHTML = `${monthArray[month]} 2018 Calendar`;
 
-// Gets appointments from local storage to display titles in the calendar
-
-const appointments = JSON.parse(localStorage.getItem('Appointments'))
-
 // Render appointment titles on load 
 
 window.addEventListener('load', () => {
 
-for(let i = 0; i < appointments.length; i++) {
-  const { title, date } = appointments[i];
+for(let i = 0; i < appointmentsArr.length; i++) {
+  const { title, date } = appointmentsArr[i];
   
   dayWithAppointment(title, date);
   
@@ -136,18 +132,26 @@ function dayWithAppointment (title, day) {
 }
 
 // Removes an Appointment
+
     
 function removeAppointment(day) {
 
-  console.log('before', appointmentsArr);
+  //console.log(typeof day, day);
 
-  appointmentsArr.filter(appointment => appointment.date !== day );
+  //console.log('before', appointmentsArr);
 
-  console.log('after', appointmentsArr);
+  const deleted = appointmentsArr.filter(function (appointment) { 
+    console.log(typeof appointment.date, appointment.date);
+    return appointment.date !== day.toString();
+   });
 
-  //localStorage.setItem('Appointments', JSON.stringify(appointmentsArr));
+  //console.log('deleted', deleted);
 
-  //clearAppointment();
+  localStorage.setItem('Appointments', JSON.stringify(deleted));
+
+
+  clearAppointment();
+
   
   reload(); 
 
