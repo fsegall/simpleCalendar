@@ -101,12 +101,14 @@ function renderAppointment (date, title, content) {
     contentEl.textContent = content;
     deleteButtonEl.textContent = "Delete";
     
-    //console.log(titleEl, contentEl);
+    console.log('title div', renderTitle);
     
     renderTitle.appendChild(titleEl);
     renderDate.appendChild(dateEl);
     renderContent.appendChild(contentEl);
     renderButton.appendChild(deleteButtonEl);
+
+
     
     dayWithAppointment(title, date);
 
@@ -119,7 +121,13 @@ function dayWithAppointment (title, day) {
   let itemClass = `.item${day}`;
 
   let cell = document.querySelector(itemClass);
-  console.log(cell);
+  console.log('cell', cell);
+
+  // Don't allow appointment title to render twice inside calendar cell
+
+  if (cell.hasAttribute('data-content')) {
+    return;
+  }
 
   const titleEl = document.createElement('span');
 
