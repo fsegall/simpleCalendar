@@ -69,11 +69,18 @@ document.querySelector("#CalendarPage").addEventListener('click', (e) => {
 
     const appointmentDaily = appointments.filter(appointment => appointment.date === e.target.attributes.date.textContent);
 
-    const { date, title, content } = appointmentDaily[0];
+    if (appointmentDaily.length === 0) {
 
-    clearAppointment();
+      clearAppointment();
+      
+    } else {
 
-    renderAppointment (date, title, content);
+        clearAppointment();
+
+        const { date, title, content } = appointmentDaily[0];
+
+        renderAppointment (date, title, content);
+    }
 
 });
 
