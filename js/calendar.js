@@ -6,10 +6,6 @@ const month = new Date().getMonth();
 
 const day = new Date().getDate().toString();
 
-console.log(month);
-
-console.log('day', day);
-
 // Elements variables
 
 // const mainEl = document.querySelector("#Calendar");
@@ -29,7 +25,7 @@ const renderButton = document.querySelector("#button");
 
 // Appointments array
 
-let appointmentsArr = [];
+let appointmentsArr = localStorage.getItem('Appointments') ? JSON.parse(localStorage.getItem('Appointments')) : [];
 
 // Title of the Calendar with month
 
@@ -37,13 +33,7 @@ let monthArray = ["January", "February", "March", "April", "May", "June", "July"
 
 headerTitleEl.innerHTML = `${monthArray[month]} 2018 Calendar`;
 
-// Selecting first calendar cell 
-
-function testing () {
-    console.log(document.querySelector('.item1'));
-}
-
-// Gets appointments from local storage
+// Gets appointments from local storage to display titles in the calendar
 
 const appointments = JSON.parse(localStorage.getItem('Appointments'))
 
@@ -51,70 +41,51 @@ const appointments = JSON.parse(localStorage.getItem('Appointments'))
 
 window.addEventListener('load', () => {
 
-console.log('Array', appointments);
-
 for(let i = 0; i < appointments.length; i++) {
-  const { title, content, date } = appointments[i];
-  console.log('Appointment', appointments[i]);
-  renderAppointment (date, title, content);
+  const { title, date } = appointments[i];
+  
+  dayWithAppointment(title, date);
+  
 }
 
 })
 
 // Toggles a blue border around calendar cells when clicked
 
-
 document.querySelector("#CalendarPage").addEventListener('click', (e) => { 
     
     const days = document.querySelectorAll('#CalendarPage > li');
     
+    let counter = 0
     for(let day of days) {
         day.classList.remove('red-border');
-    }
+        counter++;
+        day.setAttribute('date', `${counter}`)
+    };
     
     if(e.target.nodeName === "LI") {
     e.target.classList.add('red-border');
     }
 
-    const appointments = JSON.parse(localStorage.getItem('Appointments'))
+    const appointments = JSON.parse(localStorage.getItem('Appointments'));
 
-    for(let i = 0; i < appointments.length; i++) {
-      const { title, content, date } = appointments[i];
-      console.log('Appointment', appointments[i]);
-      renderAppointment (date, title, content);
-    }
+    console.log(e.target.attributes.date.textContent);
 
-});
+    const appointmentDaily = appointments.filter(appointment => appointment.date === e.target.attributes.date.textContent);
 
-// Listens to content input change
+    const { date, title, content } = appointmentDaily[0];
 
-const contentEl = document.querySelector('#content');
+    clearAppointment();
 
-contentEl.addEventListener('input', (e) => console.log(e.target.value));
+    renderAppointment (date, title, content);
 
-
-// Selected date
-
-const datePicker = document.querySelector('#datePicker');
-
-datePicker.addEventListener('input', (e) => {
-    
-    console.log('Date', e.target.valueAsDate.getDate() + 1);
-    return e.target.valueAsDate.getDate() + 1;
-    
 });
 
 // Renders an Appointement from local storage
 
 function renderAppointment (date, title, content) {
+
     
-/*     const appointments = JSON.parse(localStorage.getItem('Appointments'))
-
-    for(let appointment of appointments) {
-
-    } */
-
-    //const { title, content, date } = appointments[0];
     const renderTitle = document.querySelector('#title');
     const renderDate = document.querySelector('#date');
     const renderContent = document.querySelector('#content');
@@ -126,6 +97,7 @@ function renderAppointment (date, title, content) {
     const deleteButtonEl = document.createElement('button');
     
     deleteButtonEl.setAttribute('id', 'delete');
+
     deleteButtonEl.setAttribute('onclick', `removeAppointment(${date})`);
     
     titleEl.textContent = title;
@@ -133,7 +105,7 @@ function renderAppointment (date, title, content) {
     contentEl.textContent = content;
     deleteButtonEl.textContent = "Delete";
     
-    console.log(titleEl, contentEl);
+    //console.log(titleEl, contentEl);
     
     renderTitle.appendChild(titleEl);
     renderDate.appendChild(dateEl);
@@ -147,22 +119,17 @@ function renderAppointment (date, title, content) {
 // Renders the title of an appointment to the calendar cell
 
 function dayWithAppointment (title, day) {
-  
-  //const appointments = JSON.parse(localStorage.getItem('Appointments'))
-
-  //const { date, title } = appointments[0];
 
   let itemClass = `.item${day}`;
 
-  console.log(itemClass);
-
-  
-
-  const cell = document.querySelector(itemClass);
+  let cell = document.querySelector(itemClass);
+  console.log(cell);
 
   const titleEl = document.createElement('span');
 
   titleEl.textContent = title;
+
+  cell.setAttribute('data-content', 'true');
 
   cell.appendChild(titleEl);
 
@@ -170,21 +137,29 @@ function dayWithAppointment (title, day) {
 
 // Removes an Appointment
     
-async function removeAppointment(day) {
+function removeAppointment(day) {
 
-  // delete item from local storage 
   console.log('before', appointmentsArr);
-  appointmentsArr.filter(appointment => appointment.date !== day );
-  console.log('here', appointmentsArr);
-  await localStorage.setItem('Appointments', JSON.stringify(appointmentsArr));
 
+  appointmentsArr.filter(appointment => appointment.date !== day );
+
+  console.log('after', appointmentsArr);
+
+  //localStorage.setItem('Appointments', JSON.stringify(appointmentsArr));
+
+  //clearAppointment();
+  
+  reload(); 
+
+}
+
+// Helper functions to clear appointment divs
+
+function clearAppointment() {
   renderTitle.innerHTML = "" ;
   renderDate.innerHTML = "";
   renderContent.innerHTML = "" ;
   renderButton.innerHTML = "" ;  
-  
-  reload(); 
-
 }
 
 function reload () {
@@ -201,8 +176,6 @@ function onSubmit (e) {
     
     const formInputs = document.querySelector('#formInputs');
     
-    console.log('Title', formInputs.elements[1].value, 'Content', formInputs.elements[2].value, formInputs.elements.value);
-    
     const titleString = formInputs.elements[1].value;
     
     const contentString = formInputs.elements[2].value;
@@ -213,11 +186,13 @@ function onSubmit (e) {
     
     const appointmentObj = { title: titleString, content: contentString, date: daySelect }
 
+    // Validação
+
     appointmentsArr.push(appointmentObj);
 
     localStorage.setItem('Appointments', JSON.stringify(appointmentsArr));
-    
-    //console.log(localStorage.getItem('Appointments'));
+
+    clearAppointment();
     
     renderAppointment(appointmentObj.date, appointmentObj.title, appointmentObj.content);
     
@@ -231,23 +206,30 @@ document.querySelector('.clear').addEventListener('click', () => {
 });
 
 
-// Put multiple items in local Storage
+
+// Listens to content input change
+
+/* const contentEl = document.querySelector('#content');
+
+contentEl.addEventListener('input', (e) => console.log(e.target.value)); */
 
 
+// Selected date
 
-/* function setToStorage (title, content) {
-  appointmentsArr.push({ title: title, content: content, date: day });
-  localStorage.setItem('Appointments', JSON.stringify(appointmentsArr));
-};
+/* const datePicker = document.querySelector('#datePicker');
 
-setToStorage ('here', 'now');
-setToStorage ('another', 'again');
- */
+datePicker.addEventListener('input', (e) => {
+    
+    console.log('Date', e.target.valueAsDate.getDate() + 1);
+    return e.target.valueAsDate.getDate() + 1;
+    
+}); */
 
+// Selecting first calendar cell 
 
-
-
-
+function testing () {
+  //console.log(document.querySelector('.item1'));
+}
 
 
 
