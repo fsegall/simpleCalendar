@@ -104,7 +104,7 @@ function renderAppointment (date, title, content) {
     deleteButtonEl.setAttribute('onclick', `removeAppointment(${date})`);
     
     titleEl.textContent = title;
-    dateEl.textContent = date;
+    dateEl.textContent = `Appointment for day ${date}`;
     contentEl.textContent = content;
     deleteButtonEl.textContent = "Delete";
     
@@ -205,7 +205,13 @@ function onSubmit (e) {
     
     const appointmentObj = { title: titleString, content: contentString, date: daySelect }
 
-    // Validação
+    // Validate unique appointment
+
+    for(appointment of appointmentsArr) {
+      if(appointmentObj.date === appointment.date) {
+        alert('You have already scheduled an appointment for this day. You can delete to add a different appointment');
+      }
+    }
 
     appointmentsArr.push(appointmentObj);
 
