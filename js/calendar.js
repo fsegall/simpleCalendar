@@ -123,7 +123,12 @@ function dayWithAppointment (title, day) {
   let itemClass = `.item${day}`;
 
   let cell = document.querySelector(itemClass);
-  console.log(cell);
+
+  // Check if there is already an appointment title on that day 
+
+  if (cell.hasAttribute('data-content')) {
+    return;
+  }
 
   const titleEl = document.createElement('span');
 
@@ -145,9 +150,9 @@ function removeAppointment(day) {
 
   console.log('after', appointmentsArr);
 
-  //localStorage.setItem('Appointments', JSON.stringify(appointmentsArr));
+  localStorage.setItem('Appointments', JSON.stringify(appointmentsArr));
 
-  //clearAppointment();
+  clearAppointment();
   
   reload(); 
 
@@ -182,11 +187,17 @@ function onSubmit (e) {
 
     // Fix current day being yesterday (Some issue with getDate and local time in Brazil)
     
-    const daySelect = formInputs.elements[0].valueAsDate.getMonth() === 10 ? "1" :  (formInputs.elements[0].valueAsDate.getDate() + 1).toString() ;
+    const daySelect = formInputs.elements[0].valueAsDate.getMonth() === 10 ? "1" :  (formInputs.elements[0].valueAsDate.getDate() + 1).toString();
     
     const appointmentObj = { title: titleString, content: contentString, date: daySelect }
 
-    // Validação
+    // Validate if day is empty
+
+    for(let appointment of appointmentsArr ) {
+      if (appointment.date === appointmentObj.date)
+      alert('You can only have one appointment for this day.');
+      return;
+    }
 
     appointmentsArr.push(appointmentObj);
 
