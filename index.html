@@ -60,6 +60,8 @@
                 </ul>
             </div>
         </div>
+
+        <div class="form-container">
             <div id="appointment" >
                 <div id="date">
                 </div>
@@ -70,26 +72,26 @@
                 <div id="button">
                 </div>
             </div>
-            <div class="form-container">
-              <div class= "form-row">
-                <form id="formInputs">
-                    <label class="date">Select a Date</label>
-                    <div class="form-item">
-                    <input type="date" name="date" id="datePicker" required />
-                    </div>
-                    <label class="formHeader">Make an Appointment</label>
-                    <div class="title">
-                    <label>Name of appointment</label>
-                    <input id="title" name="title"/>
-                    </div>
-                    <div class="form-item">
-                    <textarea id="content" name="content"></textarea>
-                    </div>
-                    <button type="submit" class="add">Add</button>
-                    <button class="clear" type="reset">Clear</button>
-                </form>
-              </div>
+            <div class= "form-row">
+            <form id="formInputs">
+                <label class="date">Select a Date</label>
+                <div class="form-item">
+                <input type="date" name="date" id="datePicker" required />
+                </div>
+                <label class="formHeader">Make an Appointment</label>
+                <div class="title">
+                <label>Name of appointment</label>
+                <input id="title" name="title" required/>
+                </div>
+                <div class="form-item">
+                <label>Description</label>
+                <textarea id="content" name="content" required></textarea>
+                </div>
+                <button type="submit" class="add">Add</button>
+                <button class="clear" type="reset">Clear</button>
+            </form>
             </div>
+        </div>
 		<script src="js/calendar.js"></script>
 	</body>
 </html>

@@ -95,18 +95,25 @@ function renderAppointment (date, title, content) {
     const renderButton = document.querySelector("#button");
     
     const titleEl = document.createElement('h3');
+    titleEl.setAttribute('contenteditable', 'true');
     const dateEl = document.createElement('h4');
     const contentEl = document.createElement('p');
+    contentEl.setAttribute('contenteditable', 'true');
     const deleteButtonEl = document.createElement('button');
+    const saveButton = document.createElement('button');
     
     deleteButtonEl.setAttribute('id', 'delete');
 
     deleteButtonEl.setAttribute('onclick', `removeAppointment(${date})`);
+
+    saveButton.setAttribute('id', 'save');
+    saveButton.setAttribute('onclick', `editAppointment(${date})` )
     
     titleEl.textContent = title;
     dateEl.textContent = `Appointment for day ${date}`;
     contentEl.textContent = content;
     deleteButtonEl.textContent = "Delete";
+    saveButton.textContent="Save";
     
     console.log('title div', renderTitle);
     
@@ -114,6 +121,8 @@ function renderAppointment (date, title, content) {
     renderDate.appendChild(dateEl);
     renderContent.appendChild(contentEl);
     renderButton.appendChild(deleteButtonEl);
+    renderButton.appendChild(saveButton);
+
 
 
     
@@ -172,6 +181,39 @@ function removeAppointment(day) {
 
 }
 
+// Edits an appointment
+
+function editAppointment(day) {
+
+  const edit = appointmentsArr.filter(function (appointment) { 
+    console.log(typeof appointment.date, appointment.date);
+    return appointment.date !== day.toString();
+   });
+
+   //console.log('edit', document.querySelector('#title').children[0].innerText);
+   //console.log('edit', document.querySelector('#content').children[0].innerText);
+
+   const titleString = document.querySelector('#title').children[0].innerText;
+   const contentString = document.querySelector('#content').children[0].innerText;
+   const daySelect = day.toString();
+
+
+   const appointmentObj = { title: titleString, content: contentString, date: daySelect }
+
+   console.log('Obj', appointmentObj);
+
+   const editedArr = appointmentsArr.filter(appointment => appointment.date !== appointmentObj.date);
+
+   editedArr.push(appointmentObj);
+
+   localStorage.setItem('Appointments', JSON.stringify(editedArr));
+   
+   //renderAppointment(appointmentObj.date, appointmentObj.title, appointmentObj.content); 
+
+   reload();
+
+}
+
 // Helper functions to clear appointment divs
 
 function clearAppointment() {
@@ -209,7 +251,7 @@ function onSubmit (e) {
 
     for(appointment of appointmentsArr) {
       if(appointmentObj.date === appointment.date) {
-        alert('You have already scheduled an appointment for this day. You can delete to add a different appointment');
+        alert('You have already scheduled an appointment for this day. You can delete to add a different appointment or edit the current one.');
       }
     }
 

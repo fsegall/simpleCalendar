@@ -1,10 +1,10 @@
 h1 {
-  color: #900C3F;
+  color: #28f432;
   margin: 2rem;
   padding-top: 1rem;
   text-align: center;
   font-size: 3rem;
-  text-shadow: 1px 1px 3px #8f8f8f;
+  text-shadow: 1px 1px 2px #fff;
 }
 
 body {
@@ -18,7 +18,8 @@ body {
 }
 
 ul.day-of-week li {
-  color: #900C3F;
+  color: #28f432;
+  text-shadow: 1px 1px 2px #fff;
   list-style-type: none;
   display: grid;
   justify-content: center;
@@ -43,15 +44,25 @@ ul.CalendarPage li {
   padding-top: 0.5rem;
 }
 
+#appointment {
+  box-shadow: 2px 2px 6px #28f432;
+  border-radius: 10px;
+  width:50%;
+  margin: 3rem auto;
+  text-align: center;
+  padding: 1rem;
+  overflow: auto;
+  grid-column: 1 / span 2;
+}
+
 .form-container {
   display: grid;
-  grid-template-columns: repeat(4, 1fr)
-  grid-template-rows: 1fr 1fr;
+  grid-template-columns: repeat(4, 1fr);
   padding: 3rem;
 }
 
 .form-row {
-  grid-column: 4 / span 1;
+  grid-column: 3 / span 2;
 }
 
 .form-item textarea {
@@ -68,7 +79,7 @@ ul.CalendarPage li {
 }
 
 label {
-  padding: 1rem 0;
+  padding: 0.5rem 0;
   color: #330000;
   display: block;
 }
@@ -117,6 +128,20 @@ label.date {
   background-color: #FF5733; 
 }
 
+#save {
+
+  padding: 10px 20px;
+  background-color: #24b12b; 
+  border: none;
+  color: #fff;
+  margin-top: 1rem;
+
+}
+
+#save:hover {
+  background-color: #28f432;  ; 
+}
+
 .red-border {
-  border: 2px solid #900C3F;
+  border: 2px solid #28f432;
 }
